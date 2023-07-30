@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <properties>
+        <property name="LOGS_PATH" value="./logs" />
+        <property name="APP_NAME" value="UrlShortenerService"/>
+        <property name="FILE_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %level [${sys:APPLICATION_INSTANCE_ID},APP:${APP_NAME} TID:%X{traceId} SID:%X{spanId}] [L:%c F:%X{FLOW_ID} T:%thread] %msg%n"></property>
+    </properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
+        </Console>
+        <RollingFile name="Root"
+                     fileName="${LOGS_PATH}/root.log"
+                     filePattern="${LOGS_PATH}/root.log.%i"
+                     append="false">
+            <PatternLayout  pattern="${FILE_LOG_PATTERN}">
+            </PatternLayout>
+            <Policies>
+                <!-- rollover on startup, daily and when the file reaches
+                    100 MegaBytes -->
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy
+                        size="100 MB" />
+            </Policies>
+            <DefaultRolloverStrategy
+                    max="20"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Root" level="info" />
+        </Root>
+    </Loggers>
+</Configuration>
